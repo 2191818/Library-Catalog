@@ -2,120 +2,45 @@ const express = require("express");
 const cors = require("cors");
 const app = express();
 const port = 8080;
+const admin = require("firebase-admin");
+const serviceAccount = require("./library-catalog-fff24-firebase-adminsdk-o41da-6a8cd8dc59.json");
+// Yes I know this is security risk to implement security information like this ↑
+
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+  databaseURL: "https://library-catalog-fff24-default-rtdb.firebaseio.com/",
+});
 
 //Added cors because of browser saftey issues that were occuring between frontend and backend
 app.use(cors());
 
-const catalog = [
-  {
-    id: 1,
-    title: "The Great Gatsby",
-    author: "F. Scott Fitzgerald",
-    category: "Book",
-    isbn: "123456789",
-  },
-  {
-    id: 2,
-    title: "1984",
-    author: "George Orwell",
-    category: "Book",
-    isbn: "987654321",
-  },
-  {
-    id: 3,
-    title: "The Science of Climate Change",
-    author: "John Doe",
-    category: "Paper",
-    isbn: "555555555",
-  },
-  {
-    id: 4,
-    title: "To Kill a Mockingbird",
-    author: "Harper Lee",
-    category: "Book",
-    isbn: "111222333",
-  },
-  {
-    id: 5,
-    title: "A Brief History of Time",
-    author: "Stephen Hawking",
-    category: "Book",
-    isbn: "444555666",
-  },
-  {
-    id: 6,
-    title: "The Art of War",
-    author: "Sun Tzu",
-    category: "Book",
-    isbn: "777888999",
-  },
-  {
-    id: 7,
-    title: "The Catcher in the Rye",
-    author: "J.D. Salinger",
-    category: "Book",
-    isbn: "666777888",
-  },
-  {
-    id: 8,
-    title: "The Quantum Theory of Fields",
-    author: "Steven Weinberg",
-    category: "Paper",
-    isbn: "999000111",
-  },
-  {
-    id: 9,
-    title: "Pride and Prejudice",
-    author: "Jane Austen",
-    category: "Book",
-    isbn: "222333444",
-  },
-  {
-    id: 10,
-    title: "The Origin of Species",
-    author: "Charles Darwin",
-    category: "Book",
-    isbn: "888999000",
-  },
-  {
-    id: 11,
-    title: "Advanced Machine Learning",
-    author: "Andrew Ng",
-    category: "Paper",
-    isbn: "112233445",
-  },
-  {
-    id: 12,
-    title: "The History of Art",
-    author: "E.H. Gombrich",
-    category: "Book",
-    isbn: "223344556",
-  },
-  {
-    id: 13,
-    title: "The Theory of Relativity",
-    author: "Albert Einstein",
-    category: "Paper",
-    isbn: "334455667",
-  },
-  {
-    id: 14,
-    title: "War and Peace",
-    author: "Leo Tolstoy",
-    category: "Book",
-    isbn: "556677889",
-  },
-  {
-    id: 15,
-    title: "The Grapes of Wrath",
-    author: "John Steinbeck",
-    category: "Book",
-    isbn: "667788990",
-  },
-];
+const catalog = require("./catalog");
 
 app.get("/", (req, res) => {
-  res.send("Server is up and running");
+  res.send(`Server running on port ${port}`);
+});
+
+app.get("/api/users", async (req, res) => {
+  try {
+    const listUsers = async (nextPageToken) => {
+      const userRecords = await admin.auth().listUsers(1000, nextPageToken);
+      const users = userRecords.users.map((user) => ({
+        uid: user.uid,
+        email: user.email,
+        displayName: user.displayName || "",
+      }));
+
+      res.status(200).json(users);
+
+      if (userRecords.pageToken) {
+        listUsers(userRecords.pageToken);
+      }
+    };
+
+    listUsers();
+  } catch (error) {
+    res.status(500).json({ error: "Error fetching users: " + error.message });
+  }
 });
 
 app.get("/api/catalog", (req, res) => {
@@ -123,5 +48,5 @@ app.get("/api/catalog", (req, res) => {
 });
 
 app.listen(port, () => {
-  console.log(`Server running on port ${port}`);
+  console.log(`Server running on dort ${port}`);
 });
