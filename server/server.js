@@ -112,55 +112,6 @@ const catalog = [
     category: "Book",
     isbn: "667788990",
   },
-  {
-    id: 15,
-    title: "The Grapes of Wrath",
-    author: "John Steinbeck",
-    category: "Book",
-    isbn: "667788990",
-  },
-  {
-    id: 15,
-    title: "The Grapes of Wrath",
-    author: "John Steinbeck",
-    category: "Book",
-    isbn: "667788990",
-  },
-  {
-    id: 15,
-    title: "The Grapes of Wrath",
-    author: "John Steinbeck",
-    category: "Book",
-    isbn: "667788990",
-  },
-  {
-    id: 15,
-    title: "The Grapes of Wrath",
-    author: "John Steinbeck",
-    category: "Book",
-    isbn: "667788990",
-  },
-  {
-    id: 15,
-    title: "The Grapes of Wrath",
-    author: "John Steinbeck",
-    category: "Book",
-    isbn: "667788990",
-  },
-  {
-    id: 15,
-    title: "The Grapes of Wrath",
-    author: "John Steinbeck",
-    category: "Book",
-    isbn: "667788990",
-  },
-  {
-    id: 15,
-    title: "The Grapes of Wrath",
-    author: "John Steinbeck",
-    category: "Book",
-    isbn: "667788990",
-  },
 ];
 
 app.get("/", (req, res) => {

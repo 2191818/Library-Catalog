@@ -16,8 +16,10 @@ interface CatalogItem {
 
 const App: React.FC = () => {
   const [catalog, setCatalog] = useState<CatalogItem[]>([]);
+  const [filteredCatalog, setFilteredCatalog] = useState<CatalogItem[]>([]); // State for filtered catalog
   const [user, setUser] = useState<null | {}>(null); // To track the authenticated user
   const [showSignup, setShowSignup] = useState(false); // Toggle between Login and Signup
+  const [searchQuery, setSearchQuery] = useState(""); // State for search query
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
@@ -33,6 +35,7 @@ const App: React.FC = () => {
         .get<CatalogItem[]>("http://localhost:8080/api/catalog")
         .then((response) => {
           setCatalog(response.data);
+          setFilteredCatalog(response.data); // Initialize filtered catalog with all data
         })
         .catch((error) => {
           console.error("Error fetching catalog data:", error);
@@ -52,6 +55,20 @@ const App: React.FC = () => {
       .catch((error) => {
         console.error("Error signing out:", error);
       });
+  };
+
+  // Handle search query change
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(e.target.value);
+
+    // Filter catalog based on search query
+    const filtered = catalog.filter(
+      (item) =>
+        item.title.toLowerCase().includes(e.target.value.toLowerCase()) ||
+        item.isbn.toLowerCase().includes(e.target.value.toLowerCase()) ||
+        item.category.toLowerCase().includes(e.target.value.toLowerCase())
+    );
+    setFilteredCatalog(filtered);
   };
 
   if (!user) {
@@ -96,14 +113,25 @@ const App: React.FC = () => {
               </a>
             </li>
           </ul>
-          <button onClick={handleLogout} className="btn btn-danger">
+          <button onClick={handleLogout} className="btn btn-danger ml-2">
             Logout
           </button>
         </div>
       </nav>
       <br />
-
       <br />
+      <br />
+      <h1>Libray Catalog</h1>
+      <br />
+      <form className="d-flex" role="search">
+        <input
+          type="search"
+          placeholder="Search by title, ISBN, or category"
+          className="form-control mr-2"
+          value={searchQuery}
+          onChange={handleSearchChange}
+        />
+      </form>
       <br />
       <table className="table">
         <thead>
@@ -117,7 +145,7 @@ const App: React.FC = () => {
           </tr>
         </thead>
         <tbody>
-          {catalog.map((item) => (
+          {filteredCatalog.map((item) => (
             <tr key={item.id}>
               <td>{item.id}</td>
               <td>{item.title}</td>
