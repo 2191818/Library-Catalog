@@ -31,20 +31,17 @@ app.post("/api/catalog", (req, res) => {
   res.status(201).json(newItem);
 });
 
-app.put("/api/catalog/:id", async (req, res) => {
+app.put("/api/catalog/:id", (req, res) => {
   const { id } = req.params;
   const updatedItem = req.body;
 
-  try {
-    const result = await CatalogModel.updateOne({ id }, updatedItem);
+  const index = catalog.findIndex((item) => item.id === parseInt(id));
 
-    if (result.modifiedCount > 0) {
-      res.status(200).json(updatedItem);
-    } else {
-      res.status(404).json({ message: "Item not found" });
-    }
-  } catch (error) {
-    res.status(500).json({ message: "Error updating item" });
+  if (index !== -1) {
+    catalog[index] = { ...catalog[index], ...updatedItem };
+    res.status(200).json(catalog[index]);
+  } else {
+    res.status(404).json({ message: "Item not found" });
   }
 });
 

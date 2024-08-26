@@ -50,10 +50,10 @@ const UpdateCatalog: React.FC<UpdateCatalogProps> = ({
       <br />
       <form onSubmit={handleSubmit}>
         <div className="mb-3">
-          <label>Title</label>
           <input
             type="text"
             className="form-control"
+            placeholder="Title"
             name="title"
             value={updatedItem.title}
             onChange={handleChange}
@@ -61,8 +61,8 @@ const UpdateCatalog: React.FC<UpdateCatalogProps> = ({
           />
         </div>
         <div className="mb-3">
-          <label>Author</label>
           <input
+            placeholder="Author"
             type="text"
             className="form-control"
             name="author"
@@ -72,10 +72,10 @@ const UpdateCatalog: React.FC<UpdateCatalogProps> = ({
           />
         </div>
         <div className="mb-3">
-          <label>Category</label>
           <input
             type="text"
             className="form-control"
+            placeholder="Category"
             name="category"
             value={updatedItem.category}
             onChange={handleChange}
@@ -83,10 +83,10 @@ const UpdateCatalog: React.FC<UpdateCatalogProps> = ({
           />
         </div>
         <div className="mb-3">
-          <label>ISBN</label>
           <input
             type="text"
             className="form-control"
+            placeholder="ISBN"
             name="isbn"
             value={updatedItem.isbn}
             onChange={handleChange}
