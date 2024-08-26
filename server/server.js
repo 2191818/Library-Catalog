@@ -80,6 +80,19 @@ app.get("/api/users", async (req, res) => {
   }
 });
 
+// Current record-keeping system in customer table is done using a counter
+// app.put("/api/users/:uid", async (req, res) => {
+//   const { uid } = req.params;
+//   const updatedData = req.body;
+
+//   try {
+//     await admin.auth().updateUser(uid, updatedData);
+//     res.status(200).json({ message: "User updated successfully" });
+//   } catch (error) {
+//     res.status(500).json({ error: "Error updating user: " + error.message });
+//   }
+// });
+
 app.listen(port, () => {
   console.log(`Server running on dort ${port}`);
 });
