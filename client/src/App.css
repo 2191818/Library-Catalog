@@ -18,6 +18,11 @@
   font-weight: bold;
 }
 
+.error {
+  color: firebrick;
+  font-weight: bold;
+}
+
 .no-bg-button {
   background: none;
   border: none;

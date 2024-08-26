@@ -10,9 +10,7 @@ const Login: React.FC = () => {
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
     signInWithEmailAndPassword(auth, email, password)
-      .then(() => {
-        // Handle successful login
-      })
+      .then(() => {})
       .catch((error) => {
         setError(error.message);
       });

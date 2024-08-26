@@ -1,10 +1,11 @@
 const express = require("express");
-const cors = require("cors");
 const app = express();
 const port = 8080;
+const cors = require("cors");
 const admin = require("firebase-admin");
 const serviceAccount = require("./library-catalog-fff24-firebase-adminsdk-o41da-6a8cd8dc59.json");
 // Yes I know this is security risk to implement security information like this ↑
+const catalog = require("./catalog");
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
@@ -13,11 +14,50 @@ admin.initializeApp({
 
 //Added cors because of browser saftey issues that were occuring between frontend and backend
 app.use(cors());
-
-const catalog = require("./catalog");
+app.use(express.json());
 
 app.get("/", (req, res) => {
   res.send(`Server running on port ${port}`);
+});
+
+app.get("/api/catalog", (req, res) => {
+  res.json(catalog);
+});
+
+app.post("/api/catalog", (req, res) => {
+  const newItem = req.body;
+  newItem.id = catalog.length + 1;
+  catalog.push(newItem);
+  res.status(201).json(newItem);
+});
+
+app.put("/api/catalog/:id", async (req, res) => {
+  const { id } = req.params;
+  const updatedItem = req.body;
+
+  try {
+    const result = await CatalogModel.updateOne({ id }, updatedItem);
+
+    if (result.modifiedCount > 0) {
+      res.status(200).json(updatedItem);
+    } else {
+      res.status(404).json({ message: "Item not found" });
+    }
+  } catch (error) {
+    res.status(500).json({ message: "Error updating item" });
+  }
+});
+
+app.delete("/api/catalog/:id", (req, res) => {
+  const { id } = req.params;
+  const index = catalog.findIndex((item) => item.id === parseInt(id));
+
+  if (index !== -1) {
+    catalog.splice(index, 1);
+    res.status(200).json({ message: "Catalog item deleted successfully" });
+  } else {
+    res.status(404).json({ error: "Item not found" });
+  }
 });
 
 app.get("/api/users", async (req, res) => {
@@ -41,10 +81,6 @@ app.get("/api/users", async (req, res) => {
   } catch (error) {
     res.status(500).json({ error: "Error fetching users: " + error.message });
   }
-});
-
-app.get("/api/catalog", (req, res) => {
-  res.json(catalog);
 });
 
 app.listen(port, () => {

@@ -104,7 +104,35 @@ const catalog = [
     title: "The Grapes of Wrath",
     author: "John Steinbeck",
     category: "Book",
-    isbn: "667788990",
+    isbn: "145678952",
+  },
+  {
+    id: 16,
+    title: "How to be Batman",
+    author: "Muhammad Arsalan Saeed",
+    category: "Paper",
+    isbn: "7894561230",
+  },
+  {
+    id: 17,
+    title: "How to be Spider-Man",
+    author: "Muhammad Arsalan Saeed",
+    category: "Paper",
+    isbn: "017258369",
+  },
+  {
+    id: 18,
+    title: "Batman Spotted in Gotham",
+    author: "Muhammad Arsalan Saeed",
+    category: "News",
+    isbn: "789489122",
+  },
+  {
+    id: 19,
+    title: "Spider-Man Spotted swinging in NYC",
+    author: "Muhammad Arsalan Saeed",
+    category: "News",
+    isbn: "899815156",
   },
 ];
 
