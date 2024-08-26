@@ -2,11 +2,13 @@ import React, { useState } from "react";
 import { auth } from "../../firebaseConfig";
 import { signInWithEmailAndPassword } from "firebase/auth";
 
+// Creating all needed states
 const Login: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
+  // Login handling, submission, error and Firebase stuff
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
     signInWithEmailAndPassword(auth, email, password)

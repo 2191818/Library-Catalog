@@ -16,14 +16,17 @@ admin.initializeApp({
 app.use(cors());
 app.use(express.json());
 
+// Route for checking server
 app.get("/", (req, res) => {
   res.send(`Server running on port ${port}`);
 });
 
+// Route for getting all catalog items
 app.get("/api/catalog", (req, res) => {
   res.json(catalog);
 });
 
+// Route for creating catalog items
 app.post("/api/catalog", (req, res) => {
   const newItem = req.body;
   newItem.id = catalog.length + 1;
@@ -31,6 +34,7 @@ app.post("/api/catalog", (req, res) => {
   res.status(201).json(newItem);
 });
 
+// Route for updating catalog items
 app.put("/api/catalog/:id", (req, res) => {
   const { id } = req.params;
   const updatedItem = req.body;
@@ -45,6 +49,7 @@ app.put("/api/catalog/:id", (req, res) => {
   }
 });
 
+// Route for delete catalog items
 app.delete("/api/catalog/:id", (req, res) => {
   const { id } = req.params;
   const index = catalog.findIndex((item) => item.id === parseInt(id));
@@ -57,6 +62,7 @@ app.delete("/api/catalog/:id", (req, res) => {
   }
 });
 
+// Route for getting all from Firebase
 app.get("/api/users", async (req, res) => {
   try {
     const listUsers = async (nextPageToken) => {

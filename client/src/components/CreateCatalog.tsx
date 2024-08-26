@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 
+// Creating all needed states
 const CreateCatalog: React.FC<{ onBack: () => void }> = ({ onBack }) => {
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
@@ -28,7 +29,7 @@ const CreateCatalog: React.FC<{ onBack: () => void }> = ({ onBack }) => {
       .post("http://localhost:8080/api/catalog", newItem)
       .then((response) => {
         console.log("Catalog item created:", response.data);
-        // Clear form
+        // Clear form after submission
         setTitle("");
         setAuthor("");
         setCategory("");

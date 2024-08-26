@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
+// Define structure for User object
 interface User {
   uid: string;
   email: string | null;
-  displayName: string | null;
   itemsTakenOut: number;
   totalItemsRented: number;
 }
@@ -12,6 +12,7 @@ interface User {
 const CustomerTable: React.FC = () => {
   const [users, setUsers] = useState<User[]>([]);
 
+  // Using axios to call API functions to frontend (Getting users)
   useEffect(() => {
     axios
       .get<User[]>("http://localhost:8080/api/users")
@@ -28,6 +29,7 @@ const CustomerTable: React.FC = () => {
       });
   }, []);
 
+  // Creating ciounter for increaseing books that are currently checked out and increasing the total amount of books checked out to that user
   const handleReceiptClick = (user: User) => {
     const updatedUsers = users.map((u) =>
       u.uid === user.uid
@@ -41,6 +43,7 @@ const CustomerTable: React.FC = () => {
     setUsers(updatedUsers);
   };
 
+  // Creating counter function for decreasing books that are currently checked out
   const handleBookClick = (user: User) => {
     const updatedUsers = users.map((u) =>
       u.uid === user.uid

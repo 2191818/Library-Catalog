@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 
+// Define structure for Catalog object
 interface CatalogItem {
   id: number;
   title: string;
@@ -20,8 +21,10 @@ const UpdateCatalog: React.FC<UpdateCatalogProps> = ({
   onBack,
   onUpdate,
 }) => {
+  // Creating all needed states
   const [updatedItem, setUpdatedItem] = useState<CatalogItem>(item);
 
+  // Update catalog
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setUpdatedItem((prevItem) => ({
@@ -29,15 +32,15 @@ const UpdateCatalog: React.FC<UpdateCatalogProps> = ({
       [name]: value,
     }));
   };
-
+  // Using axios to call API functions to frontend (update catalog)
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
     axios
       .put(`http://localhost:8080/api/catalog/${updatedItem.id}`, updatedItem)
       .then(() => {
-        onUpdate(); // Refresh the catalog
-        onBack(); // Go back to the catalog view
+        onUpdate();
+        onBack();
       })
       .catch((error) => {
         console.error("Error updating catalog item:", error);

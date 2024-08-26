@@ -7,11 +7,13 @@ import LibraryCatalog from "./components/LibraryCatalog";
 import CustomerTable from "./components/CustomerTable";
 import "./App.css";
 
+// Creating all needed states
 const App: React.FC = () => {
   const [user, setUser] = useState<null | {}>(null);
   const [showSignup, setShowSignup] = useState(false);
   const [view, setView] = useState<"catalog" | "customers">("catalog");
 
+  // authentication
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
@@ -20,10 +22,12 @@ const App: React.FC = () => {
     return () => unsubscribe();
   }, []);
 
+  // Toggle between login and signup
   const toggleAuthMode = () => {
     setShowSignup((prev) => !prev);
   };
 
+  // Handling user logout
   const handleLogout = () => {
     signOut(auth)
       .then(() => {
@@ -38,6 +42,7 @@ const App: React.FC = () => {
     setView(view);
   };
 
+  // Renders login and signup pages
   if (!user) {
     return showSignup ? (
       <div>
@@ -91,6 +96,7 @@ const App: React.FC = () => {
         </div>
       </nav>
       <br />
+      {/* Renders Catalog or Customer Table component based off selection from navbar */}
       {view === "catalog" && <LibraryCatalog />}
       {view === "customers" && <CustomerTable />}
     </div>

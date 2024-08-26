@@ -3,6 +3,7 @@ import axios from "axios";
 import CreateCatalog from "./CreateCatalog";
 import UpdateCatalog from "./UpdateCatalog";
 
+// Define structure for Catalog object
 interface CatalogItem {
   id: number;
   title: string;
@@ -11,6 +12,7 @@ interface CatalogItem {
   isbn: string;
 }
 
+// Creating all needed states
 const LibraryCatalog: React.FC = () => {
   const [catalog, setCatalog] = useState<CatalogItem[]>([]);
   const [filteredCatalog, setFilteredCatalog] = useState<CatalogItem[]>([]);
@@ -18,10 +20,12 @@ const LibraryCatalog: React.FC = () => {
   const [view, setView] = useState<"catalog" | "create" | "update">("catalog");
   const [selectedItem, setSelectedItem] = useState<CatalogItem | null>(null);
 
+  // Fetch Catalog data from API
   useEffect(() => {
     fetchCatalog();
   }, []);
 
+  // Fetches Catalog data from API
   const fetchCatalog = () => {
     axios
       .get<CatalogItem[]>("http://localhost:8080/api/catalog")
@@ -34,6 +38,7 @@ const LibraryCatalog: React.FC = () => {
       });
   };
 
+  //Updates the catalog table based off of search
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
 
@@ -46,21 +51,24 @@ const LibraryCatalog: React.FC = () => {
     setFilteredCatalog(filtered);
   };
 
+  // Switch table to create catalog view
   const handleCreateClick = () => {
     setView("create");
   };
 
+  // Switch table to update catalog view
   const handleEditClick = (item: CatalogItem) => {
     setSelectedItem(item);
     setView("update");
   };
 
+  // Using axios to call API functions to frontend (Delete catalog)
   const handleDeleteClick = (id: number) => {
     if (window.confirm("Are you sure you want to delete this item?")) {
       axios
         .delete(`http://localhost:8080/api/catalog/${id}`)
         .then(() => {
-          fetchCatalog(); // Refresh the catalog after deletion
+          fetchCatalog();
         })
         .catch((error) => {
           console.error("Error deleting catalog item:", error);
@@ -68,15 +76,18 @@ const LibraryCatalog: React.FC = () => {
     }
   };
 
+  // Switch table to go back to catalog view (Used for create and update view to go back to table)
   const handleBackToCatalog = () => {
     setView("catalog");
     setSelectedItem(null);
   };
 
+  // Renders create catalog view
   if (view === "create") {
     return <CreateCatalog onBack={handleBackToCatalog} />;
   }
 
+  // Renders update catalog view
   if (view === "update" && selectedItem) {
     return (
       <UpdateCatalog
