@@ -31,5 +31,3 @@ MoznaPOS includes the following features to efficiently manage the library's cat
 (Error handling isn't fully implemented for all scenarios, and testing was limited to what was done during implementation, rather than being exhaustive.)
 
 ### Created by Muhammad Arsalan Saeed
-
-**Not all of the code was written from scratch, and not all of it is original; I used various resources from forums, YouTube, and other sources.**
